@@ -215,7 +215,7 @@ internal static class FilterChatTypeExtension
 
         foreach (var message in messages.Messages)
         {
-            if (message.IsValidPeerType<TPeer>(out var peer))
+            if (!message.IsValidPeerType<TPeer>(out var peer))
                 continue;
 
             await actionOnUpdate(updateDeleteChannelMessages, peer);

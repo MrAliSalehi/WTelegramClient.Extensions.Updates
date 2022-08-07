@@ -1,29 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <Authors>Qwxp</Authors>
-    <Description>Extensions over WtelegramClient For Dealing With Updates</Description>
-    <Copyright> Apache-2.0</Copyright>
-    <PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
-    <PackageIcon>logo.png</PackageIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Authors>Qwxp</Authors>
+		<Description>Extensions over WtelegramClient For Dealing With Updates</Description>
+		<Copyright> Apache-2.0</Copyright>
+		<PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
+		<PackageIcon>logo.png</PackageIcon>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Version>0.1-preview</Version>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="https:\github.com\MrAliSalehi\WTelegramClient.Extensions.Updates\blob\master\README.md" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="D:\Projects\C#\Library\WTelegramClient\Extensions\Updates\WTelegramClient.Extensions.Updates\README.md" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="WTelegramClient" Version="2.6.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="WTelegramClient" Version="2.6.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="logo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
