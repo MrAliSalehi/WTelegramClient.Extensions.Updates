@@ -37,7 +37,6 @@ internal static class FilterUpdatesByIdExtensions
                 actionOnUpdate((updateUserPhoto as T)!, updatesBase);
                 break;
 
-            //START todo move to filter by id
             case UpdateEncryptedChatTyping updateEncryptedChatTyping when (updateEncryptedChatTyping.chat_id == id):
                 actionOnUpdate((updateEncryptedChatTyping as T)!, updatesBase);
                 break;
@@ -214,6 +213,8 @@ internal static class FilterUpdatesByIdExtensions
                 actionOnUpdate((updateDialogFilterOrder as T)!, updatesBase);
                 break;
 
+            default:
+                throw new NotSupportedException($"This Type Is Not Supported {update.GetType()} - {typeof(T)}");
         }
     }
 }
