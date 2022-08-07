@@ -35,7 +35,7 @@ namespace WTelegramClient.Extensions.Updates
             };
         }
 
-        public static async Task RegisterChatType<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate) where TPeer : Peer
+        public static async Task RegisterChatTypeAsync<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate) where TPeer : Peer
         {
             await Task.Run(() =>
             {
@@ -56,15 +56,6 @@ namespace WTelegramClient.Extensions.Updates
 
                 return Task.CompletedTask;
             };
-        }
-
-
-        private static void FilterUpdatesToPerformAnAction<T>(this UpdatesBase updatesBase, Action<T, UpdatesBase?> actionOnUpdate) where T : Update
-        {
-            foreach (var update in updatesBase.UpdateList.OfType<T>())
-            {
-                actionOnUpdate(update, updatesBase);
-            }
         }
     }
 }
