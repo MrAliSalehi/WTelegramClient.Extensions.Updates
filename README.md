@@ -1,3 +1,5 @@
+[![NuGet](https://img.shields.io/nuget/v/WTelegramClient.Extensions.Updates)](https://www.nuget.org/packages/WTelegramClient.Extensions.Updates)
+
 # WTelegramClient.Extensions.Updates
 
 ### Simple Set of Extensions For Easier Update Handling In [WTelegramClient](https://github.com/wiz0u/WTelegramClient/)
