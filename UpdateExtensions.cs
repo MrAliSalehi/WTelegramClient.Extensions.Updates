@@ -52,43 +52,11 @@ namespace WTelegramClient.Extensions.Updates
                 if (!obj.IsUpdateBase(out var updatesBase))
                     return Task.CompletedTask;
 
-                foreach (var update in updatesBase.UpdateList)
-                {
-                    if (!update.IsValidUpdateType<T>())
-                        continue;
-
-                    switch (update)
-                    {
-                        case UpdateUserTyping updateUserTyping when (updateUserTyping.user_id == id):
-                            {
-                                actionOnUpdate((updateUserTyping as T)!, updatesBase);
-                                break;
-                            }
-
-                        case UpdateChatParticipants updateChatParticipants when (UpdateHelpers.IsChatIdOrAnyParticipantMatch(id, updateChatParticipants)):
-                            {
-                                actionOnUpdate((updateChatParticipants as T)!, updatesBase);
-                                break;
-                            }
-
-                        case UpdateUserStatus updateUserStatus when (updateUserStatus.user_id == id):
-                            {
-                                actionOnUpdate((updateUserStatus as T)!, updatesBase);
-                                break;
-                            }
-
-                        case UpdateUserPhoto updateUserPhoto when (updateUserPhoto.user_id == id):
-                            {
-                                actionOnUpdate((updateUserPhoto as T)!, updatesBase);
-                                break;
-                            }
-                    }
-                }
+                FilterUpdatesByIdExtensions.FilterUpdatesByIdToPerformAnAction(id, actionOnUpdate, updatesBase);
 
                 return Task.CompletedTask;
             };
         }
-
 
 
         private static void FilterUpdatesToPerformAnAction<T>(this UpdatesBase updatesBase, Action<T, UpdatesBase?> actionOnUpdate) where T : Update
