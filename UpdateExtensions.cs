@@ -44,7 +44,8 @@ namespace WTelegramClient.Extensions.Updates
 
         }
 
-        public static void RegisterUpdateWithId(this Client client, long id, Action<Update, UpdatesBase> actionOnUpdate)
+        public static void RegisterUpdateWithId<T>(this Client client, long id, Action<T, UpdatesBase> actionOnUpdate)
+        where T : Update, new()
         {
             client.OnUpdate += obj =>
             {
@@ -53,29 +54,32 @@ namespace WTelegramClient.Extensions.Updates
 
                 foreach (var update in updatesBase.UpdateList)
                 {
+                    if (!update.IsValidUpdateType<T>())
+                        continue;
+
                     switch (update)
                     {
                         case UpdateUserTyping updateUserTyping when (updateUserTyping.user_id == id):
                             {
-                                actionOnUpdate(updateUserTyping, updatesBase);
+                                actionOnUpdate((updateUserTyping as T)!, updatesBase);
                                 break;
                             }
 
                         case UpdateChatParticipants updateChatParticipants when (UpdateHelpers.IsChatIdOrAnyParticipantMatch(id, updateChatParticipants)):
                             {
-                                actionOnUpdate(updateChatParticipants, updatesBase);
+                                actionOnUpdate((updateChatParticipants as T)!, updatesBase);
                                 break;
                             }
 
                         case UpdateUserStatus updateUserStatus when (updateUserStatus.user_id == id):
                             {
-                                actionOnUpdate(updateUserStatus, updatesBase);
+                                actionOnUpdate((updateUserStatus as T)!, updatesBase);
                                 break;
                             }
 
                         case UpdateUserPhoto updateUserPhoto when (updateUserPhoto.user_id == id):
                             {
-                                actionOnUpdate(updateUserPhoto, updatesBase);
+                                actionOnUpdate((updateUserPhoto as T)!, updatesBase);
                                 break;
                             }
                     }

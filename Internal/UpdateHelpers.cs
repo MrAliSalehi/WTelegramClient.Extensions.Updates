@@ -26,7 +26,7 @@ internal static class UpdateHelpers
         return outputArray;
     }
 
-    internal static bool IsValidType<TPeer>(this MessageBase message, out TPeer peer) where TPeer : Peer
+    internal static bool IsValidPeerType<TPeer>(this MessageBase message, out TPeer peer) where TPeer : Peer
     {
         if (message.Peer is TPeer validPeer)
         {
@@ -37,6 +37,8 @@ internal static class UpdateHelpers
         peer = default!;
         return false;
     }
+
+    internal static bool IsValidUpdateType<T>(this Update update) => update is T;
 
     internal static bool IsUpdateBase(this IObject obj, out UpdatesBase updateBase)
     {
