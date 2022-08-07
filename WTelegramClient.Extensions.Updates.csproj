@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>0.1-preview</Version>
+		<Version>0.1.1-preview</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
