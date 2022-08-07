@@ -173,56 +173,6 @@ internal static class FilterChatTypeExtension
                     break;
                 }
 
-            //START todo move to filter by id
-            case UpdateEncryptedChatTyping updateEncryptedChatTyping: break;
-            case UpdateEncryptedMessagesRead updateEncryptedMessagesRead: break;
-            case UpdateEncryption updateEncryption: break;
-            case UpdateGroupCall updateGroupCall: break;
-            case UpdateGroupCallParticipants updateGroupCallParticipants: break;
-            case UpdateInlineBotCallbackQuery updateInlineBotCallbackQuery: break;
-            case UpdateMessagePoll updateMessagePoll: break;
-            case UpdateMessagePollVote updateMessagePollVote: break;
-            case UpdateNewEncryptedMessage updateNewEncryptedMessage: break;
-            case UpdateNewStickerSet updateNewStickerSet: break;
-            case UpdatePhoneCall updatePhoneCall: break;
-            case UpdatePhoneCallSignalingData updatePhoneCallSignalingData: break;
-            case UpdatePinnedChannelMessages updatePinnedChannelMessages: break;
-            case UpdatePinnedDialogs updatePinnedDialogs: break;
-            case UpdateReadChannelDiscussionInbox updateReadChannelDiscussionInbox: break;
-            case UpdateReadChannelDiscussionOutbox updateReadChannelDiscussionOutbox: break;
-            case UpdateReadChannelInbox updateReadChannelInbox: break;
-            case UpdateReadChannelOutbox updateReadChannelOutbox: break;
-            case UpdateReadMessagesContents updateReadMessagesContents: break;
-            case UpdateStickerSetsOrder updateStickerSetsOrder: break;
-            case UpdateTheme updateTheme: break;
-            case UpdateUserPhone updateUserPhone: break;
-            case UpdateUserPhoto updateUserPhoto: break;
-            case UpdateUserStatus updateUserStatus: break;
-
-            case UpdateUserTyping updateUserTyping: break;
-            case UpdateWebPage updateWebPage: break;
-            case UpdateWebViewResultSent updateWebViewResultSent: break;
-            case UpdateDeleteMessages updateDeleteMessages: break;
-            case UpdateBotInlineQuery updateBotInlineQuery: break;
-            case UpdateBotInlineSend updateBotInlineSend: break;
-            case UpdateBotMenuButton updateBotMenuButton: break;
-            case UpdateBotPrecheckoutQuery updateBotPrecheckoutQuery: break;
-            case UpdateBotShippingQuery updateBotShippingQuery: break;
-            case UpdateBotStopped updateBotStopped: break;
-            case UpdateBotWebhookJSONQuery updateBotWebHookJsonQuery: break;
-            case UpdateChannel updateChannel: break;
-            case UpdateChannelParticipant updateChannelParticipant: break;
-            case UpdateChannelTooLong updateChannelTooLong: break;
-            case UpdateChannelUserTyping updateChannelUserTyping1: break;
-            case UpdateChat updateChat: break;
-            case UpdateDcOptions updateDcOptions: break;
-            case UpdateChatParticipant updateChatParticipant: break;
-            case UpdateChatParticipants updateChatParticipants: break;
-            case UpdateDialogFilter updateDialogFilter: break;
-            case UpdateDialogFilterOrder updateDialogFilterOrder: break;
-
-            //END todo move to filter by id
-
 
             //START todo wtf?
             case UpdateFavedStickers updateFavedStickers: break;
@@ -247,6 +197,7 @@ internal static class FilterChatTypeExtension
             case UpdateConfig updateConfig: break;
             case UpdateContactsReset updateContactsReset: break;
             case UpdateDialogFilters updateDialogFilters: break;
+            case UpdateDcOptions updateDcOptions: break;
 
                 //END todo wtf?
 
