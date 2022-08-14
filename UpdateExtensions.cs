@@ -18,6 +18,20 @@ namespace WTelegramClient.Extensions.Updates
             };
         }
 
+        public static void RegisterUpdateType<T>(this Client client, Func<T, UpdatesBase?, Task> onUpdate) where T : Update
+        {
+            client.OnUpdate += async obj =>
+            {
+                if (obj.IsUpdateBase(out var updatesBase))
+                {
+                    await Task.Run(() =>
+                    {
+                        updatesBase.FilterUpdatesToPerformAnAction(onUpdate);
+                    });
+                }
+            };
+        }
+
         public static void RegisterUpdateType<T1, T2>(this Client client, Action<Update, UpdatesBase?> actionOnUpdate)
             where T1 : Update
             where T2 : Update
