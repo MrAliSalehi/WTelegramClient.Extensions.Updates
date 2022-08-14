@@ -48,3 +48,15 @@ client.RegisterUpdateWithId<UpdateUserTyping>(121212, (update, upBase) =>
     Console.WriteLine($"user is typing : {update.user_id}");
 });
 ```
+
+## TO-DO :
+
+<b>
+- Do Something About these cases : https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates/blob/968bbfac38512d901a413b3c88e6e78de01b1f17/Internal/FilterChatTypeExtension.cs#L178
+
+either Remove them And mark As Unsupported Or Handle Them In Some Way ... 
+
+ - Add More Filters To The Library
+ 
+ - Write Some Automated Tests For Filters.
+</b>
