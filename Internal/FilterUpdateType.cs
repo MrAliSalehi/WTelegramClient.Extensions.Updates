@@ -1,22 +1,16 @@
 ﻿using TL;
+using WTelegramClient.Extensions.Updates.Models;
 
 namespace WTelegramClient.Extensions.Updates.Internal;
 
 internal static class FilterUpdateType
 {
-    public static void FilterUpdatesToPerformAnAction<T>(this UpdatesBase updatesBase, Action<T, UpdatesBase?> actionOnUpdate) where T : Update
+    public static async Task FilterUpdatesToPerformAnActionAsync<T>(this UpdatesBase updatesBase, Func<T, UpdatesBase?, Task> onUpdate) where T : Update
     {
         foreach (var update in updatesBase.UpdateList.OfType<T>())
         {
-            actionOnUpdate(update, updatesBase);
-        }
-    }
-
-    public static void FilterUpdatesToPerformAnAction<T>(this UpdatesBase updatesBase, Func<T, UpdatesBase?, Task> onUpdate) where T : Update
-    {
-        foreach (var update in updatesBase.UpdateList.OfType<T>())
-        {
-            onUpdate(update, updatesBase);
+            if (UpdateConfigurations.RateLimit.Limiter.ShouldHandle(update))
+                await onUpdate(update, updatesBase);
         }
     }
 }

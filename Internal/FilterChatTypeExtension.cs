@@ -5,207 +5,163 @@ namespace WTelegramClient.Extensions.Updates.Internal;
 
 internal static class FilterChatTypeExtension
 {
-    internal static void FilterByChatType<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate) where TPeer : Peer
+    internal static Task PerformActionBasedOnUpdateTypeAsync<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate, Update update) where TPeer : Peer
     {
-        client.OnUpdate += async obj =>
-        {
-            if (!obj.IsUpdateBase(out var updatesBase))
-                return;
+        var todo = Task.CompletedTask;
 
-            updatesBase.CollectUsersChats(UpdateHelpers.Users, UpdateHelpers.Chats);
-
-            foreach (var update in updatesBase.UpdateList)
-            {
-                await client.PerformActionBasedOnUpdateType(actionOnUpdate, update);
-            }
-        };
-    }
-
-    private static async Task PerformActionBasedOnUpdateType<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate, Update update) where TPeer : Peer
-    {
         switch (update)
         {
             case UpdateNewChannelMessage updateNewChannelMessage when (updateNewChannelMessage.message.Peer is TPeer peer):
-                {
-                    await actionOnUpdate(updateNewChannelMessage, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateNewChannelMessage, peer);
+                break;
+            }
 
             case UpdateNewMessage updateNewMessage when (updateNewMessage.message.Peer is TPeer peer):
-                {
-                    await actionOnUpdate(updateNewMessage, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateNewMessage, peer);
+                break;
+            }
 
             case UpdateEditMessage updateEditMessage when (updateEditMessage.message.Peer is TPeer peer):
-                {
-                    await actionOnUpdate(updateEditMessage, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateEditMessage, peer);
+                break;
+            }
             case UpdateDeleteChannelMessages updateDeleteChannelMessages:
-                {
-                    await client.DoActionForEachDeletedMessage(actionOnUpdate, updateDeleteChannelMessages);
-                    break;
-                }
+            {
+                todo = client.DoActionForEachDeletedMessageAsync(actionOnUpdate, updateDeleteChannelMessages);
+                break;
+            }
             case UpdateFolderPeers updateFolderPeers:
-                {
-                    var matchPeer = updateFolderPeers.folder_peers.FirstOrDefault(p => p.peer is TPeer);
-                    if (matchPeer is not null)
-                        await actionOnUpdate(updateFolderPeers, (matchPeer.peer as TPeer)!);
-                    break;
-                }
+            {
+                var matchPeer = updateFolderPeers.folder_peers.FirstOrDefault(p => p.peer is TPeer);
+                if (matchPeer is not null)
+                    todo = actionOnUpdate(updateFolderPeers, (matchPeer.peer as TPeer)!);
+                break;
+            }
 
             case UpdateGeoLiveViewed { peer: TPeer peer } updateGeoLiveViewed:
-                {
-                    await actionOnUpdate(updateGeoLiveViewed, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateGeoLiveViewed, peer);
+                break;
+            }
             case UpdateChatUserTyping { from_id: TPeer peer } updateChatUserTyping:
-                {
-                    await actionOnUpdate(updateChatUserTyping, peer);
-                    break;
-                }
-
-
+            {
+                todo = actionOnUpdate(updateChatUserTyping, peer);
+                break;
+            }
             case UpdateChannelUserTyping { from_id: TPeer peer } updateChannelUserTyping:
-                {
-                    await actionOnUpdate(updateChannelUserTyping, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateChannelUserTyping, peer);
+                break;
+            }
             case UpdateMessageReactions { peer: TPeer peer } updateMessageReactions:
-                {
-                    await actionOnUpdate(updateMessageReactions, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateMessageReactions, peer);
+                break;
+            }
             case UpdateNewScheduledMessage updateNewScheduledMessage when (updateNewScheduledMessage.message.Peer is TPeer peer):
-                {
-                    await actionOnUpdate(updateNewScheduledMessage, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateNewScheduledMessage, peer);
+                break;
+            }
             case UpdateNotifySettings { peer: TPeer peer } updateNotifySettings:
-                {
-                    await actionOnUpdate(updateNotifySettings, peer);
+            {
+                todo = actionOnUpdate(updateNotifySettings, peer);
 
-                    break;
-                }
+                break;
+            }
             case UpdatePeerBlocked { peer_id: TPeer peer } updatePeerBlocked:
-                {
-                    await actionOnUpdate(updatePeerBlocked, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updatePeerBlocked, peer);
+                break;
+            }
             case UpdatePeerHistoryTTL { peer: TPeer peer } updatePeerHistoryTtl:
-                {
-                    await actionOnUpdate(updatePeerHistoryTtl, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updatePeerHistoryTtl, peer);
+                break;
+            }
 
             case UpdatePeerSettings { peer: TPeer peer } updatePeerSettings:
-                {
-                    await actionOnUpdate(updatePeerSettings, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updatePeerSettings, peer);
+                break;
+            }
             case UpdatePendingJoinRequests { peer: TPeer peer } updatePendingJoinRequests:
-                {
-                    await actionOnUpdate(updatePendingJoinRequests, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updatePendingJoinRequests, peer);
+                break;
+            }
             case UpdatePinnedMessages { peer: TPeer peer } updatePinnedMessages:
-                {
-                    await actionOnUpdate(updatePinnedMessages, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updatePinnedMessages, peer);
+                break;
+            }
             case UpdateReadHistoryInbox { peer: TPeer peer } updateReadHistoryInbox:
-                {
-                    await actionOnUpdate(updateReadHistoryInbox, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateReadHistoryInbox, peer);
+                break;
+            }
             case UpdateReadHistoryOutbox { peer: TPeer peer } updateReadHistoryOutbox:
-                {
-                    await actionOnUpdate(updateReadHistoryOutbox, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateReadHistoryOutbox, peer);
+                break;
+            }
 
             case UpdateTranscribedAudio { peer: TPeer peer } updateTranscribedAudio:
-                {
-                    await actionOnUpdate(updateTranscribedAudio, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateTranscribedAudio, peer);
+                break;
+            }
 
             case UpdateBotCallbackQuery { peer: TPeer peer } updateBotCallbackQuery:
-                {
-                    await actionOnUpdate(updateBotCallbackQuery, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateBotCallbackQuery, peer);
+                break;
+            }
             case UpdateBotChatInviteRequester { peer: TPeer peer } updateBotChatInviteRequester:
-                {
-                    await actionOnUpdate(updateBotChatInviteRequester, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateBotChatInviteRequester, peer);
+                break;
+            }
 
             case UpdateBotCommands { peer: TPeer peer } updateBotCommands:
-                {
-                    await actionOnUpdate(updateBotCommands, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateBotCommands, peer);
+                break;
+            }
             case UpdateChatDefaultBannedRights { peer: TPeer peer } updateChatDefaultBannedRights:
-                {
-                    await actionOnUpdate(updateChatDefaultBannedRights, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateChatDefaultBannedRights, peer);
+                break;
+            }
             case UpdateDeleteScheduledMessages { peer: TPeer peer } updateDeleteScheduledMessages:
-                {
-                    await actionOnUpdate(updateDeleteScheduledMessages, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateDeleteScheduledMessages, peer);
+                break;
+            }
             case UpdateDialogPinned { peer: TPeer peer } updateDialogPinned:
-                {
-                    await actionOnUpdate(updateDialogPinned, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateDialogPinned, peer);
+                break;
+            }
             case UpdateDialogUnreadMark { peer: TPeer peer } updateDialogUnreadMark:
-                {
-                    await actionOnUpdate(updateDialogUnreadMark, peer);
-                    break;
-                }
+            {
+                todo = actionOnUpdate(updateDialogUnreadMark, peer);
+                break;
+            }
             case UpdateDraftMessage { peer: TPeer peer } updateDraftMessage:
-                {
-                    await actionOnUpdate(updateDraftMessage, peer);
-                    break;
-                }
-
-
-            //START todo wtf?
-            case UpdateFavedStickers updateFavedStickers: break;
-            case UpdateGroupCallConnection updateGroupCallConnection: break;
-            case UpdateLangPack updateLangPack: break;
-            case UpdateLangPackTooLong updateLangPackTooLong: break;
-            case UpdateLoginToken updateLoginToken: break;
-            case UpdateMessageID updateMessageId: break;
-            case UpdatePeerLocated updatePeerLocated: break;
-            case UpdatePrivacy updatePrivacy: break;
-            case UpdatePtsChanged updatePtsChanged: break;
-            case UpdateReadFeaturedEmojiStickers updateReadFeaturedEmojiStickers: break;
-            case UpdateReadFeaturedStickers updateReadFeaturedStickers: break;
-            case UpdateRecentStickers updateRecentStickers: break;
-            case UpdateSavedRingtones updateSavedRingtones: break;
-            case UpdateSavedGifs updateSavedGifs: break;
-            case UpdateServiceNotification updateServiceNotification: break;
-            case UpdateStickerSets updateStickerSets: break;
-            case UpdateUserName updateUserName: break;
-            case UpdateAttachMenuBots updateAttachMenuBots: break;
-            case UpdateBotWebhookJSON updateBotWebHookJson: break;
-            case UpdateConfig updateConfig: break;
-            case UpdateContactsReset updateContactsReset: break;
-            case UpdateDialogFilters updateDialogFilters: break;
-            case UpdateDcOptions updateDcOptions: break;
-
-                //END todo wtf?
-
-
+                todo = actionOnUpdate(updateDraftMessage, peer);
+                break;
+            default:
+                throw new NotSupportedException();
         }
+
+        return todo;
     }
 
-    private static async Task DoActionForEachDeletedMessage<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate,
+    private static async Task DoActionForEachDeletedMessageAsync<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate,
         UpdateDeleteChannelMessages updateDeleteChannelMessages) where TPeer : Peer
     {
         var channel = await UpdateHelpers.GetChatAsync<Channel>(client, updateDeleteChannelMessages.channel_id);

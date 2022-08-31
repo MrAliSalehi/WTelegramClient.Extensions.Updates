@@ -1,74 +1,88 @@
 ﻿using TL;
 using WTelegram;
 using WTelegramClient.Extensions.Updates.Internal;
+using WTelegramClient.Extensions.Updates.Models;
 
 namespace WTelegramClient.Extensions.Updates
 {
     public static class UpdateExtensions
     {
-        public static void RegisterUpdateType<T>(this Client client, Action<T, UpdatesBase?> actionOnUpdate) where T : Update
-        {
-            client.OnUpdate += obj =>
-            {
-                if (obj.IsUpdateBase(out var updatesBase))
-                    updatesBase.FilterUpdatesToPerformAnAction(actionOnUpdate);
-
-                return Task.CompletedTask;
-
-            };
-        }
-
+        /// <summary>
+        /// Register An Specific Update Type. Other UpdateTypes will be ignored. <para> The <see cref="RateLimit"/> Will be Respected.</para>
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="onUpdate">the action to do when ever an update with specified type received.</param>
+        /// <typeparam name="T">The Update Type that you want to listen for.</typeparam>
         public static void RegisterUpdateType<T>(this Client client, Func<T, UpdatesBase?, Task> onUpdate) where T : Update
         {
             client.OnUpdate += async obj =>
             {
                 if (obj.IsUpdateBase(out var updatesBase))
                 {
-                    await Task.Run(() =>
-                    {
-                        updatesBase.FilterUpdatesToPerformAnAction(onUpdate);
-                    });
+                    await updatesBase.FilterUpdatesToPerformAnActionAsync(onUpdate);
                 }
             };
         }
 
-        public static void RegisterUpdateType<T1, T2>(this Client client, Action<Update, UpdatesBase?> actionOnUpdate)
-            where T1 : Update
-            where T2 : Update
+        /// <summary>
+        /// Register 2 Different Update Type.Others will be ignored. <para> The <see cref="RateLimit"/> Will be Respected.</para>
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="actionOnUpdate">the action to do when ever an update with <b>T1</b> or <b>T2</b> received.</param>
+        /// <typeparam name="T1">First update Type that you want to listen for.</typeparam>
+        /// <typeparam name="T2">Second update Type that you want to listen for.</typeparam>
+        public static void RegisterUpdateType<T1, T2>(this Client client, Func<Update, UpdatesBase?, Task> actionOnUpdate) where T1 : Update where T2 : Update
         {
-            client.OnUpdate += obj =>
+            client.OnUpdate += async obj =>
             {
                 if (!obj.IsUpdateBase(out var updatesBase))
-                    return Task.CompletedTask;
+                    return;
 
-                updatesBase.FilterUpdatesToPerformAnAction<T1>(actionOnUpdate);
-                updatesBase.FilterUpdatesToPerformAnAction<T2>(actionOnUpdate);
-
-                return Task.CompletedTask;
-
+                await updatesBase.FilterUpdatesToPerformAnActionAsync<T1>(actionOnUpdate);
+                await updatesBase.FilterUpdatesToPerformAnActionAsync<T2>(actionOnUpdate);
             };
         }
 
-        public static async Task RegisterChatTypeAsync<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate) where TPeer : Peer
+        /// <summary>
+        /// Register a Chat Type [<see cref="PeerUser"/>,<see cref="PeerChannel"/>,<see cref="PeerChat"/>] for receiving updates.
+        /// <para> The <see cref="RateLimit"/> Will be Respected.</para>
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="actionOnUpdate">the action to do whenever an update with Specified ChatType(<b>TPeer</b>) received.</param>
+        /// <typeparam name="TPeer">Chat Type That inherits From <see cref="Peer"/>. </typeparam>
+        public static void RegisterChatTypeAsync<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate) where TPeer : Peer
         {
-            await Task.Run(() =>
-            {
-                client.FilterByChatType(actionOnUpdate);
-            });
-
-        }
-
-        public static void RegisterUpdateWithId<T>(this Client client, long id, Action<T, UpdatesBase> actionOnUpdate)
-        where T : Update, new()
-        {
-            client.OnUpdate += obj =>
+            client.OnUpdate += async obj =>
             {
                 if (!obj.IsUpdateBase(out var updatesBase))
-                    return Task.CompletedTask;
+                    return;
 
-                FilterUpdatesByIdExtensions.FilterUpdatesByIdToPerformAnAction(id, actionOnUpdate, updatesBase);
+                updatesBase.CollectUsersChats(UpdateHelpers.Users, UpdateHelpers.Chats);
 
-                return Task.CompletedTask;
+                foreach (var update in updatesBase.UpdateList)
+                {
+                    if (UpdateConfigurations.RateLimit.Limiter.ShouldHandle(update))
+                        await client.PerformActionBasedOnUpdateTypeAsync(actionOnUpdate, update);
+                }
+            };
+        }
+
+        /// <summary>
+        /// Register an update type for a specific ID, this id can be any identifier inside that update . Note that some update types that has no identifier cannot be handled with this method
+        /// <para> The <see cref="RateLimit"/> Will be Respected.</para>
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="id">id of the chat/user/folder_id/channel_id/query_id or anything else.</param>
+        /// <param name="actionOnUpdate">the action to do whenever an update with Specified ID received.</param>
+        /// <typeparam name="T">The Update Type that you want to listen for.</typeparam>
+        public static void RegisterUpdateWithId<T>(this Client client, long id, Func<T, UpdatesBase, Task> actionOnUpdate) where T : Update, new()
+        {
+            client.OnUpdate += async obj =>
+            {
+                if (!obj.IsUpdateBase(out var updatesBase))
+                    return;
+
+                await FilterUpdatesByIdExtensions.FilterUpdatesByIdToPerformAnActionAsync(id, actionOnUpdate, updatesBase);
             };
         }
     }
