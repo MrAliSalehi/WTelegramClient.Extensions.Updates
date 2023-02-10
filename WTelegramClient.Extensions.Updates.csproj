@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>0.1.2-preview</Version>
+		<Version>0.1.3-preview</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="WTelegramClient" Version="2.6.2" />
+		<PackageReference Include="WTelegramClient" Version="3.2.2"/>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -26,6 +26,10 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Models\Limiters\InputBasedLimit.cs"/>
 	</ItemGroup>
 
 </Project>

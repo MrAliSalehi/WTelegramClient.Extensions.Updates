@@ -1,5 +1,4 @@
 ﻿using TL;
-using WTelegramClient.Extensions.Updates.Models;
 
 namespace WTelegramClient.Extensions.Updates.Internal;
 
@@ -9,8 +8,7 @@ internal static class FilterUpdateType
     {
         foreach (var update in updatesBase.UpdateList.OfType<T>())
         {
-            if (UpdateConfigurations.RateLimit.Limiter.ShouldHandle(update))
-                await onUpdate(update, updatesBase);
+            await onUpdate(update, updatesBase);
         }
     }
 }
