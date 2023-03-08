@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<Authors>Qwxp</Authors>
@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,9 +27,4 @@
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
-
-	<ItemGroup>
-		<Compile Remove="Models\Limiters\InputBasedLimit.cs"/>
-	</ItemGroup>
-
 </Project>
