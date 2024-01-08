@@ -1,6 +1,4 @@
-﻿using TL;
-
-namespace WTelegramClient.Extensions.Updates.Internal;
+﻿namespace WTelegramClient.Extensions.Updates.Internal;
 
 internal static class FilterUpdateType
 {

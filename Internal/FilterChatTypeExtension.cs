@@ -1,7 +1,4 @@
-﻿using TL;
-using WTelegram;
-
-namespace WTelegramClient.Extensions.Updates.Internal;
+﻿namespace WTelegramClient.Extensions.Updates.Internal;
 
 internal static class FilterChatTypeExtension
 {
@@ -162,12 +159,12 @@ internal static class FilterChatTypeExtension
     }
 
     private static async Task DoActionForEachDeletedMessageAsync<TPeer>(this Client client, Func<Update, TPeer, Task> actionOnUpdate,
-        UpdateDeleteChannelMessages updateDeleteChannelMessages) where TPeer : Peer
+                                                                        UpdateDeleteChannelMessages updateDeleteChannelMessages) where TPeer : Peer
     {
         var channel = await UpdateHelpers.GetChatAsync<Channel>(client, updateDeleteChannelMessages.channel_id);
 
         var messages = await client.Channels_GetMessages(channel,
-            updateDeleteChannelMessages.messages.ToInputMessageId());
+                                                         updateDeleteChannelMessages.messages.ToInputMessageId());
 
         foreach (var message in messages.Messages)
         {

@@ -1,7 +1,4 @@
-﻿using TL;
-using WTelegram;
-
-namespace WTelegramClient.Extensions.Updates.Internal;
+﻿namespace WTelegramClient.Extensions.Updates.Internal;
 
 internal static class UpdateHelpers
 {
@@ -21,8 +18,8 @@ internal static class UpdateHelpers
         for (var indexer = 0; indexer < ids.Count; indexer++)
         {
             outputArray[indexer] = ids[indexer];
-
         }
+
         return outputArray;
     }
 
@@ -39,18 +36,6 @@ internal static class UpdateHelpers
     }
 
     internal static bool IsValidUpdateType<T>(this Update update) => update is T;
-
-    internal static bool IsUpdateBase(this IObject obj, out UpdatesBase updateBase)
-    {
-        if (obj is UpdatesBase updates)
-        {
-            updateBase = updates;
-            return true;
-        }
-
-        updateBase = default!;
-        return false;
-    }
 
     internal static async ValueTask<TChatType?> GetChatAsync<TChatType>(Client client, long channelId) where TChatType : class, new()
     {

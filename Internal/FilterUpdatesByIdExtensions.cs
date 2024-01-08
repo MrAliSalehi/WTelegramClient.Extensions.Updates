@@ -1,10 +1,7 @@
-﻿using TL;
-
-namespace WTelegramClient.Extensions.Updates.Internal;
+﻿namespace WTelegramClient.Extensions.Updates.Internal;
 
 internal static class FilterUpdatesByIdExtensions
 {
-    static FilterUpdatesByIdExtensions() { }
     public static async Task FilterUpdatesByIdToPerformAnActionAsync<T>(long id, Func<T, UpdatesBase, Task> actionOnUpdate, UpdatesBase updatesBase) where T : Update, new()
     {
         foreach (var update in updatesBase.UpdateList)
@@ -15,45 +12,42 @@ internal static class FilterUpdatesByIdExtensions
             await update.FilterUpdateByIdAsync(id, actionOnUpdate, updatesBase);
         }
     }
-    private static bool When<T>(T update, long id) where T : Update, new()
+    private static bool When<T>(T update, long id) where T : Update, new() => update switch
     {
-        return update switch
-        {
-            UpdateUserTyping updateUserTyping when updateUserTyping.user_id == id                                                                                                                                      => true,
-            UpdateUserPhone updateUserPhone when (updateUserPhone.user_id == id)                                                                                                                                       => true,
-            UpdateUserStatus updateUserStatus when (updateUserStatus.user_id == id)                                                                                                                                    => true,
-            UpdateUserTyping updateUserTyping when (updateUserTyping.user_id == id)                                                                                                                                    => true,
-            UpdateUserStatus updateUserStatus when updateUserStatus.user_id == id                                                                                                                                      => true,
-            UpdateEncryptedChatTyping updateEncryptedChatTyping when updateEncryptedChatTyping.chat_id == id                                                                                                           => true,
-            UpdateEncryptedMessagesRead updateEncryptedMessagesRead when updateEncryptedMessagesRead.chat_id == id                                                                                                     => true,
-            UpdateEncryption updateEncryption when updateEncryption.chat.ID == id                                                                                                                                      => true,
-            UpdateGroupCall updateGroupCall when updateGroupCall.call.ID == id || updateGroupCall.chat_id == id                                                                                                        => true,
-            UpdateGroupCallParticipants updateGroupCallParticipants when updateGroupCallParticipants.call.id == id                                                                                                     => true,
-            UpdateInlineBotCallbackQuery updateInlineBotCallbackQuery when updateInlineBotCallbackQuery.user_id == id || updateInlineBotCallbackQuery.msg_id.DcId == id || updateInlineBotCallbackQuery.query_id == id => true,
-            UpdateMessagePoll updateMessagePoll when updateMessagePoll.poll_id == id                                                                                                                                   => true,
-            UpdateMessagePollVote updateMessagePollVote when updateMessagePollVote.user_id == id || updateMessagePollVote.poll_id == id                                                                                => true,
-            UpdateNewEncryptedMessage updateNewEncryptedMessage when updateNewEncryptedMessage.message.ChatId == id                                                                                                    => true,
-            UpdateNewStickerSet updateNewStickerSet when updateNewStickerSet.stickerset.set.id == id || updateNewStickerSet.stickerset.documents.Any(p => p.ID == id)                                                  => true,
-            UpdatePhoneCall updatePhoneCall when updatePhoneCall.phone_call.ID == id                                                                                                                                   => true,
-            UpdatePhoneCallSignalingData updatePhoneCallSignalingData when updatePhoneCallSignalingData.phone_call_id == id                                                                                            => true,
-            UpdatePinnedChannelMessages updatePinnedChannelMessages when updatePinnedChannelMessages.channel_id == id || updatePinnedChannelMessages.messages.Any(p => p == id)                                        => true,
-            UpdatePinnedDialogs updatePinnedDialogs when (updatePinnedDialogs.folder_id == id)                                                                                                                         => true,
-            UpdateReadMessagesContents updateReadMessagesContents when (updateReadMessagesContents.messages.Any(p => p == id))                                                                                         => true,
-            UpdateStickerSetsOrder updateStickerSetsOrder when (updateStickerSetsOrder.order.Any(p => p == id))                                                                                                        => true,
-            UpdateTheme updateTheme when (updateTheme.theme.document.ID == id || updateTheme.theme.id == id)                                                                                                           => true,
-            UpdateWebPage updateWebPage when (updateWebPage.webpage.ID == id)                                                                                                                                          => true,
-            UpdateWebViewResultSent updateWebViewResultSent when (updateWebViewResultSent.query_id == id)                                                                                                              => true,
-            UpdateDeleteMessages updateDeleteMessages when (updateDeleteMessages.messages.Any(p => p == id))                                                                                                           => true,
-            UpdateChat updateChat when (updateChat.chat_id == id)                                                                                                                                                      => true,
-            UpdateChatParticipant updateCp when (updateCp.user_id == id || updateCp.user_id == id || updateCp.actor_id == id || updateCp.new_participant.UserId == id || updateCp.prev_participant.UserId == id)       => true,
-            UpdateChatParticipants updateChatParticipants when UpdateHelpers.IsChatIdOrAnyParticipantMatch(id, updateChatParticipants)                                                                                 => true,
-            UpdateChatParticipants updateChParticipant when updateChParticipant.participants.ChatId == id || updateChParticipant.participants.Participants.Any(p => p.UserId == id)                                    => true,
-            UpdateDialogFilter updateDialogFilter when updateDialogFilter.id == id                                                                                                                                     => true,
-            UpdateDialogFilterOrder updateDialogFilterOrder when updateDialogFilterOrder.order.Any(p => p == id)                                                                                                       => true,
-            _
-                => MaybeChannel(update, id)
-        };
-    }
+        UpdateUserTyping updateUserTyping when updateUserTyping.user_id == id                                                                                                                                      => true,
+        UpdateUserPhone updateUserPhone when (updateUserPhone.user_id == id)                                                                                                                                       => true,
+        UpdateUserStatus updateUserStatus when (updateUserStatus.user_id == id)                                                                                                                                    => true,
+        UpdateUserTyping updateUserTyping when (updateUserTyping.user_id == id)                                                                                                                                    => true,
+        UpdateUserStatus updateUserStatus when updateUserStatus.user_id == id                                                                                                                                      => true,
+        UpdateEncryptedChatTyping updateEncryptedChatTyping when updateEncryptedChatTyping.chat_id == id                                                                                                           => true,
+        UpdateEncryptedMessagesRead updateEncryptedMessagesRead when updateEncryptedMessagesRead.chat_id == id                                                                                                     => true,
+        UpdateEncryption updateEncryption when updateEncryption.chat.ID == id                                                                                                                                      => true,
+        UpdateGroupCall updateGroupCall when updateGroupCall.call.ID == id || updateGroupCall.chat_id == id                                                                                                        => true,
+        UpdateGroupCallParticipants updateGroupCallParticipants when updateGroupCallParticipants.call.id == id                                                                                                     => true,
+        UpdateInlineBotCallbackQuery updateInlineBotCallbackQuery when updateInlineBotCallbackQuery.user_id == id || updateInlineBotCallbackQuery.msg_id.DcId == id || updateInlineBotCallbackQuery.query_id == id => true,
+        UpdateMessagePoll updateMessagePoll when updateMessagePoll.poll_id == id                                                                                                                                   => true,
+        UpdateMessagePollVote updateMessagePollVote when updateMessagePollVote.poll_id == id || updateMessagePollVote.poll_id == id                                                                                => true,
+        UpdateNewEncryptedMessage updateNewEncryptedMessage when updateNewEncryptedMessage.message.ChatId == id                                                                                                    => true,
+        UpdateNewStickerSet updateNewStickerSet when updateNewStickerSet.stickerset.set.id == id || updateNewStickerSet.stickerset.documents.Any(p => p.ID == id)                                                  => true,
+        UpdatePhoneCall updatePhoneCall when updatePhoneCall.phone_call.ID == id                                                                                                                                   => true,
+        UpdatePhoneCallSignalingData updatePhoneCallSignalingData when updatePhoneCallSignalingData.phone_call_id == id                                                                                            => true,
+        UpdatePinnedChannelMessages updatePinnedChannelMessages when updatePinnedChannelMessages.channel_id == id || updatePinnedChannelMessages.messages.Any(p => p == id)                                        => true,
+        UpdatePinnedDialogs updatePinnedDialogs when (updatePinnedDialogs.folder_id == id)                                                                                                                         => true,
+        UpdateReadMessagesContents updateReadMessagesContents when (updateReadMessagesContents.messages.Any(p => p == id))                                                                                         => true,
+        UpdateStickerSetsOrder updateStickerSetsOrder when (updateStickerSetsOrder.order.Any(p => p == id))                                                                                                        => true,
+        UpdateTheme updateTheme when (updateTheme.theme.document.ID == id || updateTheme.theme.id == id)                                                                                                           => true,
+        UpdateWebPage updateWebPage when (updateWebPage.webpage.ID == id)                                                                                                                                          => true,
+        UpdateWebViewResultSent updateWebViewResultSent when (updateWebViewResultSent.query_id == id)                                                                                                              => true,
+        UpdateDeleteMessages updateDeleteMessages when (updateDeleteMessages.messages.Any(p => p == id))                                                                                                           => true,
+        UpdateChat updateChat when (updateChat.chat_id == id)                                                                                                                                                      => true,
+        UpdateChatParticipant updateCp when (updateCp.user_id == id || updateCp.user_id == id || updateCp.actor_id == id || updateCp.new_participant.UserId == id || updateCp.prev_participant.UserId == id)       => true,
+        UpdateChatParticipants updateChatParticipants when UpdateHelpers.IsChatIdOrAnyParticipantMatch(id, updateChatParticipants)                                                                                 => true,
+        UpdateChatParticipants updateChParticipant when updateChParticipant.participants.ChatId == id || updateChParticipant.participants.Participants.Any(p => p.UserId == id)                                    => true,
+        UpdateDialogFilter updateDialogFilter when updateDialogFilter.id == id                                                                                                                                     => true,
+        UpdateDialogFilterOrder updateDialogFilterOrder when updateDialogFilterOrder.order.Any(p => p == id)                                                                                                       => true,
+        _
+            => MaybeChannel(update, id)
+    };
     private static bool MaybeChannel<T>(T update, long id) where T : Update, new()
     {
         return update switch
@@ -73,20 +67,17 @@ internal static class FilterUpdatesByIdExtensions
             _                                                                                                                                                                              => MaybeBot(update, id),
         };
     }
-    private static bool MaybeBot<T>(T update, long id) where T : Update, new()
+    private static bool MaybeBot<T>(T update, long id) where T : Update, new() => update switch
     {
-        return update switch
-        {
-            UpdateBotInlineQuery updateBotInlineQuery when (updateBotInlineQuery.user_id == id || updateBotInlineQuery.query_id == id) => true,
-            UpdateBotInlineSend updateBotInlineSend when (updateBotInlineSend.user_id == id || updateBotInlineSend.msg_id.DcId == id)  => true,
-            UpdateBotMenuButton updateBotMenuButton when (updateBotMenuButton.bot_id == id)                                            => true,
-            UpdateBotPrecheckoutQuery updateBpQ when (updateBpQ.user_id == id || updateBpQ.query_id == id)                             => true,
-            UpdateBotShippingQuery updateBsQ when (updateBsQ.user_id == id || updateBsQ.query_id == id)                                => true,
-            UpdateBotStopped updateBotStopped when (updateBotStopped.user_id == id)                                                    => true,
-            UpdateBotWebhookJSONQuery updateBotWebHookJsonQuery when (updateBotWebHookJsonQuery.query_id == id)                        => true,
-            _                                                                                                                          => false
-        };
-    }
+        UpdateBotInlineQuery updateBotInlineQuery when (updateBotInlineQuery.user_id == id || updateBotInlineQuery.query_id == id) => true,
+        UpdateBotInlineSend updateBotInlineSend when (updateBotInlineSend.user_id == id || updateBotInlineSend.msg_id.DcId == id)  => true,
+        UpdateBotMenuButton updateBotMenuButton when (updateBotMenuButton.bot_id == id)                                            => true,
+        UpdateBotPrecheckoutQuery updateBpQ when (updateBpQ.user_id == id || updateBpQ.query_id == id)                             => true,
+        UpdateBotShippingQuery updateBsQ when (updateBsQ.user_id == id || updateBsQ.query_id == id)                                => true,
+        UpdateBotStopped updateBotStopped when (updateBotStopped.user_id == id)                                                    => true,
+        UpdateBotWebhookJSONQuery updateBotWebHookJsonQuery when (updateBotWebHookJsonQuery.query_id == id)                        => true,
+        _                                                                                                                          => false
+    };
     private static Task FilterUpdateByIdAsync<T>(this Update update, long id, Func<T, UpdatesBase, Task> actionOnUpdate, UpdatesBase updatesBase) where T : Update, new()
     {
         return update switch
