@@ -17,7 +17,7 @@ reference: `<PackageReference Include="WTelegramClient.Extensions.Updates" Versi
 
 ### Examples : 
 
-#### <i> Filter For New Messages From Channel : </i>
+#### _Filter For New Messages From Channel :_
 
 ```csharp
 var client = new Client(/*provide the config..*/);
@@ -30,7 +30,7 @@ client.RegisterUpdateType<UpdateNewChannelMessage>((channelMessage, updatesBase)
 });
 ```
 
-#### <i> Or Listen For New Message From Channel <b>AND</b> Deleted Messages : </i>
+#### _Or Listen For New Message From Channel <b>AND</b> Deleted Messages :_
 
 
 ```csharp
@@ -40,7 +40,7 @@ client.RegisterUpdateType<UpdateNewChannelMessage, UpdateDeleteChannelMessages>(
 });
 ```
 
-#### <i> You Can Register a Specific Chat Type With Passing  a `Peer` Type : </i>
+#### _You Can Register a Specific Chat Type With Passing  a `Peer` Type :_
 
 ```csharp
 
@@ -51,7 +51,7 @@ await client.RegisterChatTypeAsync<PeerChannel>((update, channel) =>
 });
 
 ```
-#### <i> Also You Can Search For A Specific `ID` Inside Of Upcoming Updates(Including Update Type) : </i>
+#### _Also You Can Search For A Specific `ID` Inside Of Upcoming Updates(Including Update Type) :_
 
 ```csharp
 client.RegisterUpdateWithId<UpdateUserTyping>(121212, (update, upBase) =>
