@@ -1,17 +1,19 @@
+# WTelegramClient.Extensions.Updates
+
 [![NuGet](https://img.shields.io/nuget/v/WTelegramClient.Extensions.Updates)](https://www.nuget.org/packages/WTelegramClient.Extensions.Updates)
 ![Nuget](https://img.shields.io/nuget/dt/WTelegramClient.Extensions.Updates)
 
-# WTelegramClient.Extensions.Updates
 
-### Simple Set of Extensions For Easier Update Handling In [WTelegramClient](https://github.com/wiz0u/WTelegramClient/)
+Simple Set of Extensions For Easier Update Handling In [WTelegramClient](https://github.com/wiz0u/WTelegramClient/)
+
 
 # Install
 
-dotnet cli: `dotnet add package WTelegramClient.Extensions.Updates --version 1.0.2`
+dotnet cli: `dotnet add package WTelegramClient.Extensions.Updates --version 1.1.0`
 
-nuget: `NuGet\Install-Package WTelegramClient.Extensions.Updates -Version 1.0.2`
+nuget: `NuGet\Install-Package WTelegramClient.Extensions.Updates -Version 1.1.0`
 
-reference: `<PackageReference Include="WTelegramClient.Extensions.Updates" Version="1.0.2" />`
+reference: `<PackageReference Include="WTelegramClient.Extensions.Updates" Version="1.1.0" />`
 
 ### Examples : 
 
@@ -19,6 +21,8 @@ reference: `<PackageReference Include="WTelegramClient.Extensions.Updates" Versi
 
 ```csharp
 var client = new Client(/*provide the config..*/);
+
+await client.LoginUserIfNeeded();
 
 client.RegisterUpdateType<UpdateNewChannelMessage>((channelMessage, updatesBase) =>
 {
@@ -54,4 +58,26 @@ client.RegisterUpdateWithId<UpdateUserTyping>(121212, (update, upBase) =>
 {
     Console.WriteLine($"user is typing : {update.user_id}");
 });
+```
+
+### Blocking
+
+currently all of the mentioned methods will NOT block the current thread, so they has to be called at the `startup` of your application and then the flow of your problem should be blocked somewhere else.
+
+using the `*Block` overloads of these methods you can block your current thread:
+
+```csharp
+// this is NOT going to block the current thread
+client.RegisterUpdateType<UpdateNewChannelMessage>(async (messages, upBase) =>
+{
+    await Task.Delay(2, cancellationToken);
+    Console.WriteLine($"new message");
+});
+
+//this WILL block the thread so the code will not continue after this point until the cancelation token is requested
+client.RegisterUpdateTypeBlocking<UpdateNewChannelMessage>(async (messages, upBase) =>
+{
+    await Task.Delay(2, cancellationToken);
+    Console.WriteLine($"new message");
+}, cancellationToken); // the token is also optional, you can skip it
 ```
