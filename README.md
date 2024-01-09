@@ -62,7 +62,7 @@ client.RegisterUpdateWithId<UpdateUserTyping>(121212, (update, upBase) =>
 
 ### Blocking
 
-currently all of the mentioned methods will NOT block the current thread, so they has to be called at the `startup` of your application and then the flow of your problem should be blocked somewhere else.
+currently all of the mentioned methods will NOT block the current thread, so they has to be called at the `startup` of your application and then the flow of your program should be blocked somewhere else.
 
 using the `*Block` overloads of these methods you can block your current thread:
 
