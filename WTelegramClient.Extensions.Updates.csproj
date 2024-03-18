@@ -11,20 +11,19 @@
 		<PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageLicenseUrl>LICENCE.txt</PackageLicenseUrl>
+		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Version>1.2.0</Version>
+		<Version>1.2.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath=""/>
+		<None Include="logo.png" Pack="true" PackagePath=""/>
+		<None Include="LICENSE.txt" Pack="true" PackagePath="/"/>
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="WTelegramClient" Version="3.7.1"/>
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Include="logo.png" Pack="true" PackagePath=""/>
-	</ItemGroup>
 </Project>
