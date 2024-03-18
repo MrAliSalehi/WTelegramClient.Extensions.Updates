@@ -9,11 +9,9 @@ Simple Set of Extensions For Easier Update Handling In [WTelegramClient](https:/
 
 # Install
 
-dotnet cli: `dotnet add package WTelegramClient.Extensions.Updates --version 1.1.0`
+dotnet cli: `dotnet add package WTelegramClient.Extensions.Updates`
 
-nuget: `NuGet\Install-Package WTelegramClient.Extensions.Updates -Version 1.1.0`
-
-reference: `<PackageReference Include="WTelegramClient.Extensions.Updates" Version="1.1.0" />`
+nuget: `NuGet\Install-Package WTelegramClient.Extensions.Updates`
 
 ### Examples : 
 
