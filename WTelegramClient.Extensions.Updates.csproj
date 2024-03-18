@@ -7,20 +7,21 @@
 		<Nullable>enable</Nullable>
 		<Authors>Qwxp</Authors>
 		<Description>Extensions over WtelegramClient For Dealing With Updates</Description>
-		<Copyright> Apache-2.0</Copyright>
+		<Copyright>Apache-2.0</Copyright>
 		<PackageProjectUrl>https://github.com/MrAliSalehi/WTelegramClient.Extensions.Updates</PackageProjectUrl>
 		<PackageIcon>logo.png</PackageIcon>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageLicenseUrl>LICENCE.txt</PackageLicenseUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Version>1.2.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="D:\Projects\C#\Library\WTelegramClient\Extensions\Updates\WTelegramClient.Extensions.Updates\README.md" />
+		<None Include="README.md" Pack="true" PackagePath=""/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="WTelegramClient" Version="3.6.3"/>
+		<PackageReference Include="WTelegramClient" Version="3.7.1"/>
 	</ItemGroup>
 
 	<ItemGroup>
